@@ -20,6 +20,9 @@ Gumby.touch(function() {
 
 // Document ready
 $(function() {
-
+	$('[gumby-shuffle]').on('gumby.onShuffle', function(e, data) {
+		//console.log("Shuffle!");
+		//console.log(data);
+	})
 });
 
