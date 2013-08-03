@@ -9,8 +9,10 @@
 
 		this.$el = $el;
 
+		// jQuery object of children
+		this.$children = this.$el.children('.columns,.column');
 		// array of children
-		this.children = $.makeArray(this.$el.children('.columns,.column'));
+		this.children = $.makeArray(this.$children);
 		// parse shuffle attribute into array of test:sequence objects
 		this.shuffles = this.parseAttrValue(Gumby.selectAttr.apply(this.$el, ['shuffle']));
 		this.shuffled = false;
@@ -18,8 +20,7 @@
 		var scope = this;
 
 		// handle tests now and then on resize
-		this.handleTests();
-		$(window).on('resize', function() {
+		$(window).on('load resize', function() {
 			scope.handleTests();
 		});
 	}
@@ -62,8 +63,8 @@
 			newArr = this.children;
 		}
 
-		// empty parent and loop round newArr appending each child
-		this.$el.html('');
+		// remove children from DOM and loop round newArr appending each
+		this.$children.remove();
 		$(newArr).each(function() {
 			scope.$el.append($(this));
 		});
