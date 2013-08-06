@@ -13,7 +13,8 @@
 		this.setup();
 
 		var scope = this;
-		$(window).on('load resize', function() {
+
+		$(window).on('load'+(this.resize ? ' resize' : ''), function() {
 			scope.init();
 		});
 	}
@@ -28,6 +29,8 @@
 		this.media = Gumby.selectAttr.apply(this.$el, ['media']) || false;
 		// default image to load
 		this.def = Gumby.selectAttr.apply(this.$el, ['default']) || false;
+		// update on resize
+		this.resize = Gumby.selectAttr.apply(this.$el, ['resize']) || false;
 
 		// check functions
 		this.checks = {
