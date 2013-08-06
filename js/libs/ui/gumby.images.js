@@ -11,7 +11,11 @@
 
 		// set up module based on attributes
 		this.setup();
-		this.init();
+
+		var scope = this;
+		$(window).on('load resize', function() {
+			scope.init();
+		});
 	}
 
 	// set up module based on attributes
@@ -24,8 +28,6 @@
 		this.media = Gumby.selectAttr.apply(this.$el, ['media']) || false;
 		// default image to load
 		this.def = Gumby.selectAttr.apply(this.$el, ['default']) || false;
-		// feature supported or media query matched
-		this.success = false;
 
 		// check functions
 		this.checks = {
@@ -40,29 +42,33 @@
 
 	// fire required checks and load resulting image
 	Images.prototype.init = function() {
+		// feature supported or media query matched
+		var success = false;
+
 		// if support attribute supplied and Modernizr is present
 		if(this.supports && Modernizr) {
-			this.success = this.handleTests('supports', this.parseAttr(this.supports));
+			success = this.handleTests('supports', this.parseAttr(this.supports));
 		}
 
 		// if media attribute supplied and matchMedia is supported
 		// and success is still false, meaning no supporting feature was found
-		if(this.media && window.matchMedia && !this.success) {
-			this.success = this.handleTests('media', this.parseAttr(this.media));
+		if(this.media && window.matchMedia && !success) {
+			console.log(this.handleTests('media', this.parseAttr(this.media)));
+			success = this.handleTests('media', this.parseAttr(this.media));
 		}
 
 		// no feature supported or media query matched so load default if supplied
-		if(!this.success && this.def) {
-			this.success = this.def;
+		if(!success && this.def) {
+			success = this.def;
 		}
 
 		// no image to load
-		if(!this.success) {
+		if(!success) {
 			return false;
 		}
 
 		// preload image and insert or set background-image property
-		this.insertImage(this.type, this.success);
+		this.insertImage(this.type, success);
 	};
 
 	// handle media object checking each prop for matching media query 
