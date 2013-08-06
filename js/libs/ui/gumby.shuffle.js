@@ -15,7 +15,7 @@
 		this.children = $.makeArray(this.$children);
 		// parse shuffle attribute into array of test:sequence objects
 		this.shuffles = this.parseAttrValue(Gumby.selectAttr.apply(this.$el, ['shuffle']));
-		this.current = false;
+		this.current = '';
 
 		var scope = this;
 
