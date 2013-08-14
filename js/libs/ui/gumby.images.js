@@ -17,6 +17,11 @@
 		$(window).on('load'+(this.resize ? ' resize' : ''), function() {
 			scope.init();
 		});
+
+		this.$el.on('gumby.initialize', function() {
+			scope.setup();
+			scope.init();
+		});
 	}
 
 	// set up module based on attributes
@@ -56,7 +61,6 @@
 		// if media attribute supplied and matchMedia is supported
 		// and success is still false, meaning no supporting feature was found
 		if(this.media && window.matchMedia && !success) {
-			console.log(this.handleTests('media', this.parseAttr(this.media)));
 			success = this.handleTests('media', this.parseAttr(this.media));
 		}
 
@@ -132,13 +136,22 @@
 	};
 
 	// add initialisation
-	Gumby.addInitalisation('images', function() {
+	Gumby.addInitalisation('images', function(all) {
 		$('[gumby-supports],[data-supports],[supports],[gumby-media],[data-media],[media]').each(function() {
 			var $this = $(this);
+
 			// this element has already been initialized
-			if($this.data('isImage')) {
+			// and we're only initializing new modules
+			if($this.data('isImage') && !all) {
+				return true;
+
+			// this element has already been initialized
+			// and we need to reinitialize it
+			} else if($this.data('isImage') && all) {
+				$this.trigger('gumby.initialize');
 				return true;
 			}
+
 			// mark element as initialized
 			$this.data('isImage', true);
 			new Images($this);
