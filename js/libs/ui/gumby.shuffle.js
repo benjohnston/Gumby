@@ -139,7 +139,7 @@
 
 	// add initialisation
 	Gumby.addInitalisation('shuffle', function(all) {
-		$('[data-shuffle],[gumby-shuffle],[shuffle]').each(function() {
+		$('.row[data-shuffle],.row[gumby-shuffle],.row[shuffle]').each(function() {
 			var $this = $(this);
 
 			// this element has already been initialized
