@@ -15,6 +15,8 @@
 		this.children = $.makeArray(this.$children);
 		// parse shuffle attribute into array of test:sequence objects
 		this.shuffles = this.parseAttrValue(Gumby.selectAttr.apply(this.$el, ['shuffle']));
+		// default sequence
+		this.default = this.defaultSequence(this.$children.length);
 		this.current = '';
 
 		var scope = this;
@@ -28,15 +30,28 @@
 	// loop round each test
 	// if matchMedia passes then shuffle with that sequence
 	Shuffle.prototype.handleTests = function() {
-		var scope = this;
+		var scope = this, 
+			success = false;
 
 		// test each media query
 		$(this.shuffles).each(function(key, val) {
-			if(window.matchMedia(val.test).matches && scope.current !== val.test) {
-				scope.current = val.test;
-				scope.shuffle(val.sequence);
+			if(window.matchMedia(val.test).matches) {
+				if(scope.current !== val.test) {
+					scope.current = val.test;
+					scope.shuffle(val.sequence);
+				}
+				
+				success = true;
+				return false;
 			}
 		});
+
+		console.log(success);
+
+		// return to default
+		if(!success) {
+			scope.shuffle(this.default);
+		}
 	};
 
 	// shuffle children into supplied sequence
@@ -65,6 +80,14 @@
 		});
 
 		this.$el.trigger('gumby.onShuffle', [$(newArr)]);
+	};
+
+	Shuffle.prototype.defaultSequence = function(length) {
+		var str = '', i = 0;
+		for(i; i < length; i++) {
+			str += i+'-';
+		}
+		return str.substr(0, str.length - 1);
 	};
 
 	// return array of test:sequence objects
