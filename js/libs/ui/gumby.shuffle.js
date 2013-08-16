@@ -141,10 +141,19 @@
 	Gumby.addInitalisation('shuffle', function() {
 		$('[data-shuffle],[gumby-shuffle],[shuffle]').each(function() {
 			var $this = $(this);
+
 			// this element has already been initialized
-			if($this.data('isShuffle')) {
+			// and we're only initializing new modules
+			if($this.data('isShuffle') && !all) {
+				return true;
+
+			// this element has already been initialized
+			// and we need to reinitialize it
+			} else if($this.data('isShuffle') && all) {
+				$this.trigger('gumby.initialize');
 				return true;
 			}
+
 			// mark element as initialized
 			$this.data('isShuffle', true);
 			new Shuffle($this);
