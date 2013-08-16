@@ -9,18 +9,23 @@
 
 		this.$el = $el;
 
+		this.type = '';
+		this.supports = '';
+		this.media = '';
+		this.def = '';
+		this.current = '';
+
 		// set up module based on attributes
 		this.setup();
 
 		var scope = this;
-
-		$(window).on('load'+(this.resize ? ' resize' : ''), function() {
-			scope.init();
+		$(window).on('load '+(!this.media || 'resize'), function() {
+			scope.fire();
 		});
 
 		this.$el.on('gumby.initialize', function() {
 			scope.setup();
-			scope.init();
+			scope.fire();
 		});
 	}
 
@@ -34,8 +39,15 @@
 		this.media = Gumby.selectAttr.apply(this.$el, ['media']) || false;
 		// default image to load
 		this.def = Gumby.selectAttr.apply(this.$el, ['default']) || false;
-		// update on resize
-		this.resize = Gumby.selectAttr.apply(this.$el, ['resize']) || false;
+
+		// parse support/media objects
+		if(this.supports) {
+			this.supports = this.parseAttr(this.supports);
+		}
+
+		if(this.media) {
+			this.media = this.parseAttr(this.media);
+		}
 
 		// check functions
 		this.checks = {
@@ -49,19 +61,19 @@
 	};
 
 	// fire required checks and load resulting image
-	Images.prototype.init = function() {
+	Images.prototype.fire = function() {
 		// feature supported or media query matched
 		var success = false;
 
 		// if support attribute supplied and Modernizr is present
 		if(this.supports && Modernizr) {
-			success = this.handleTests('supports', this.parseAttr(this.supports));
+			success = this.handleTests('supports', this.supports);
 		}
 
 		// if media attribute supplied and matchMedia is supported
 		// and success is still false, meaning no supporting feature was found
 		if(this.media && window.matchMedia && !success) {
-			success = this.handleTests('media', this.parseAttr(this.media));
+			success = this.handleTests('media', this.media);
 		}
 
 		// no feature supported or media query matched so load default if supplied
@@ -74,8 +86,11 @@
 			return false;
 		}
 
-		// preload image and insert or set background-image property
-		this.insertImage(this.type, success);
+		// preload image and insert or set background-image property if not already set
+		if(this.current !== success) {
+			this.current = success;
+			this.insertImage(this.type, success);
+		}
 	};
 
 	// handle media object checking each prop for matching media query 
@@ -109,7 +124,7 @@
 			type === 'img' ? scope.$el.attr('src', img) : scope.$el.css('background-image', 'url('+img+')');
 
 			// trigger custom loaded event
-			scope.$el.trigger('gumby.onResized');
+			scope.$el.trigger('gumby.imageUpdate', [img]);
 		}).attr('src', img);
 	};
 
