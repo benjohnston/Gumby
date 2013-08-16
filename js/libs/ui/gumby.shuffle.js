@@ -9,6 +9,29 @@
 
 		this.$el = $el;
 
+		this.$children = [];
+		this.children = [];
+		this.shuffles = [];
+		this.default = '';
+		this.current = '';
+
+		var scope = this;
+
+		this.setup();
+
+		// handle tests now and then on resize
+		$(window).on('load resize', function() {
+			scope.handleTests();
+		});
+
+		this.$el.on('gumby.initialize', function() {
+			scope.setup();
+		}).on('gumby.shuffle', function() {
+			scope.handleTests();
+		});
+	}
+
+	Shuffle.prototype.setup = function() {
 		// jQuery object of children
 		this.$children = this.$el.children('.columns,.column');
 		// array of children
@@ -18,14 +41,7 @@
 		// default sequence
 		this.default = this.defaultSequence(this.$children.length);
 		this.current = 'default';
-
-		var scope = this;
-
-		// handle tests now and then on resize
-		$(window).on('load resize', function() {
-			scope.handleTests();
-		});
-	}
+	};
 
 	// loop round each test
 	// if matchMedia passes then shuffle with that sequence
@@ -128,7 +144,7 @@
 	// register UI module
 	Gumby.UIModule({
 		module: 'shuffle',
-		events: [],
+		events: ['onShuffle', 'shuffle'],
 		init: function() {
 			Gumby.initialize('shuffle');
 		}

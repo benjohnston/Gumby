@@ -22,7 +22,12 @@ Gumby.touch(function() {
 $(function() {
 	$('[gumby-shuffle]').on('gumby.onShuffle', function(e, data) {
 		console.log("Shuffle!");
-		//console.log(data);
-	})
+		console.log(data);
+	});
+
+	setTimeout(function() {
+		console.log("TRIGGERING");
+		$('[gumby-shuffle]').trigger('gumby.shuffle');
+	}, 5000);
 });
 
