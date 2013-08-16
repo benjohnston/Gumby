@@ -17,20 +17,25 @@
 
 		var scope = this;
 
+		// set up module based on attribute options
 		this.setup();
 
-		// handle tests now and then on resize
+		// handle tests now and on resize
 		$(window).on('load resize', function() {
 			scope.handleTests();
 		});
 
-		this.$el.on('gumby.initialize', function() {
-			scope.setup();
-		}).on('gumby.shuffle', function() {
+		// handle tests on gumby.shuffle
+		this.$el.on('gumby.shuffle', function() {
 			scope.handleTests();
+
+		// allow re-initialisation on gumby.initialize
+		}).on('gumby.initialize', function() {
+			scope.setup();
 		});
 	}
 
+	// set up module based on attributes
 	Shuffle.prototype.setup = function() {
 		// jQuery object of children
 		this.$children = this.$el.children('.columns,.column');
@@ -52,17 +57,20 @@
 		// test each media query
 		$(this.shuffles).each(function(key, val) {
 			if(window.matchMedia(val.test).matches) {
+
+				// if matching media query has changed then shuffle
 				if(scope.current !== val.test) {
 					scope.current = val.test;
 					scope.shuffle(val.sequence);
 				}
 				
+				// mark as media query passed and end loop
 				success = true;
 				return false;
 			}
 		});
 
-		// return to default
+		// return to default if nothing matched
 		if(!success && this.current !== 'default') {
 			this.current = 'default';
 			scope.shuffle(this.default);
@@ -94,9 +102,11 @@
 			scope.$el.append($(this));
 		});
 
+		// pass jQuery array to event handler
 		this.$el.trigger('gumby.onShuffle', [$(newArr)]);
 	};
 
+	// return default sequence 0-1-2 etc depending on number of children
 	Shuffle.prototype.defaultSequence = function(length) {
 		var str = '', i = 0;
 		for(i; i < length; i++) {
