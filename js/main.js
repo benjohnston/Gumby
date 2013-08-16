@@ -20,7 +20,7 @@ Gumby.touch(function() {
 
 // Document ready
 $(function() {
-	$('[gumby-media]').on('gumby.imageUpdate', function(e, src) {
+	$('[gumby-media]').on('gumby.onChange', function(e, src) {
 		console.log("Image updated", src);
 	});
 });
