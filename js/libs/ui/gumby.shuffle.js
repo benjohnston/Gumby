@@ -17,7 +17,7 @@
 		this.shuffles = this.parseAttrValue(Gumby.selectAttr.apply(this.$el, ['shuffle']));
 		// default sequence
 		this.default = this.defaultSequence(this.$children.length);
-		this.current = '';
+		this.current = 'default';
 
 		var scope = this;
 
@@ -46,10 +46,9 @@
 			}
 		});
 
-		console.log(success);
-
 		// return to default
-		if(!success) {
+		if(!success && this.current !== 'default') {
+			this.current = 'default';
 			scope.shuffle(this.default);
 		}
 	};
