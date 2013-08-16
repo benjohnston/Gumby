@@ -29,5 +29,8 @@ $(function() {
 		console.log("TRIGGERING");
 		$('[gumby-shuffle]').trigger('gumby.shuffle');
 	}, 5000);
+
+	$('[gumby-shuffle]').attr('gumby-shuffle', 'only screen and (max-width: 820px) and (min-width: 768px)|1-0-2,only screen and (max-width: 768px) and (min-width: 400px)|1-0-2,only screen and (max-width: 400px)|2-1-0');
+	Gumby.initialize('shuffle', true);
 });
 

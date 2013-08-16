@@ -138,7 +138,7 @@
 	};
 
 	// add initialisation
-	Gumby.addInitalisation('shuffle', function() {
+	Gumby.addInitalisation('shuffle', function(all) {
 		$('[data-shuffle],[gumby-shuffle],[shuffle]').each(function() {
 			var $this = $(this);
 
