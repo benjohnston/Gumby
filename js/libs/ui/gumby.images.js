@@ -7,6 +7,8 @@
 
 	function Images($el) {
 
+		Gumby.debug('Initializing Responsive Images module', $el);
+
 		this.$el = $el;
 
 		this.type = '';
@@ -19,11 +21,12 @@
 		this.setup();
 
 		var scope = this;
-		$(window).on('load gumby.trigger '+(!this.media || 'resize'), function() {
+		$(window).on('load gumby.trigger '+(!this.media || 'resize'), function(e) {
 			scope.fire();
 		});
 
 		this.$el.on('gumby.initialize', function() {
+			Gumby.debug('Re-initializing Responsive Images module', scope.$el);
 			scope.setup();
 			scope.fire();
 		});
@@ -78,6 +81,7 @@
 
 		// no image to load
 		if(!success) {
+			Gumby.warn('No responsive images tests passed', this.$el);
 			return false;
 		}
 
@@ -119,6 +123,7 @@
 			type === 'img' ? scope.$el.attr('src', img) : scope.$el.css('background-image', 'url('+img+')');
 
 			// trigger custom loaded event
+			Gumby.debug('Triggering onChange event', this.$el);
 			scope.$el.trigger('gumby.onChange', [img]);
 		}).attr('src', img);
 	};
