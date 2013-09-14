@@ -219,9 +219,10 @@
 		<div class="row">
 			<h1 class="fittext">Responsive text will expand to fill the available space</h1>
 		</div>
-		<div class="row">
+		<div class="row" 
+			 gumby-shuffle="only screen and (max-width: 820px) and (min-width: 768px)|2-0-1,only screen and (max-width: 768px) and (min-width: 400px)|1-0-2,only screen and (max-width: 400px)|2-1-0">
 			<div class="four columns">
-				<h4 class="lead">ul.disc</h4>
+				<h4 class="lead">1ul.disc</h4>
 				<ul class="disc">
 					<li>List item</li>
 					<li>List item</li>
@@ -237,7 +238,7 @@
 				</ul>
 			</div>
 			<div class="four columns">
-				<h4 class="lead">ul.circle</h4>
+				<h4 class="lead">2ul.circle</h4>
 				<ul class="circle">
 					<li>List item</li>
 					<li>List item</li>
@@ -253,7 +254,7 @@
 				</ul>
 			</div>
 			<div class="four columns">
-				<h4 class="lead">ul.square</h4>
+				<h4 class="lead">3ul.square</h4>
 				<ul class="square">
 					<li>List item</li>
 					<li>List item</li>
@@ -1293,12 +1294,14 @@
 	<script src="js/libs/ui/gumby.tabs.js"></script>
 	<script src="js/libs/ui/gumby.navbar.js"></script>
 	<script src="js/libs/ui/gumby.fittext.js"></script>
+	<script src="js/libs/ui/gumby.shuffle.js"></script>
 	<script src="js/libs/ui/jquery.validation.js"></script>
 	<script src="js/libs/gumby.init.js"></script>
 
 	<!--
 	gumby.min.js contains gumby.js, all UI modules and gumby.init.js
 	<script src="js/libs/gumby.min.js"></script> -->
+
 	<script src="js/plugins.js"></script>
 	<script src="js/main.js"></script>
 
