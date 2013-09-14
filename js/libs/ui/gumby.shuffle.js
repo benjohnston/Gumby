@@ -42,7 +42,7 @@
 	// set up module based on attributes
 	Shuffle.prototype.setup = function() {
 		// jQuery object of children
-		this.$children = this.$el.children('.columns,.column');
+		this.$children = this.$el.children(Gumby.selectAttr.apply(this.$el, ['children']));
 		// array of children
 		this.children = $.makeArray(this.$children);
 		// parse shuffle attribute into array of test:sequence objects
@@ -107,6 +107,7 @@
 		});
 
 		// pass jQuery array to event handler
+		Gumby.debug('Children shuffled', newArr, scope.$el);
 		Gumby.debug('Triggering onShuffle event', this.$el);
 		this.$el.trigger('gumby.onShuffle', [$(newArr)]);
 	};
@@ -144,7 +145,7 @@
 
 	// add initialisation
 	Gumby.addInitalisation('shuffle', function(all) {
-		$('.row[data-shuffle],.row[gumby-shuffle],.row[shuffle]').each(function() {
+		$('[data-shuffle],[gumby-shuffle],[shuffle]').each(function() {
 			var $this = $(this);
 
 			// this element has already been initialized
