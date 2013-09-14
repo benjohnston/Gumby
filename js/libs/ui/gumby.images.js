@@ -123,7 +123,7 @@
 			type === 'img' ? scope.$el.attr('src', img) : scope.$el.css('background-image', 'url('+img+')');
 
 			// trigger custom loaded event
-			Gumby.debug('Triggering onChange event', this.$el);
+			Gumby.debug('Triggering onChange event', img, scope.$el);
 			scope.$el.trigger('gumby.onChange', [img]);
 		}).attr('src', img);
 	};
