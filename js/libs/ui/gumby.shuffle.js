@@ -29,12 +29,12 @@
 
 		// handle tests on gumby.shuffle
 		this.$el.on('gumby.shuffle', function() {
-			Gumby.debug('Shuffle event triggered', $el);
+			Gumby.debug('Shuffle event triggered', scope.$el);
 			scope.handleTests();
 
 		// allow re-initialisation on gumby.initialize
 		}).on('gumby.initialize', function() {
-			Gumby.debug('Re-initializing shuffle module', $el);
+			Gumby.debug('Re-initializing shuffle module', scope.$el);
 			scope.setup();
 		});
 	}
@@ -107,7 +107,7 @@
 		});
 
 		// pass jQuery array to event handler
-		Gumby.debug('Triggering onShuffle event', $el);
+		Gumby.debug('Triggering onShuffle event', this.$el);
 		this.$el.trigger('gumby.onShuffle', [$(newArr)]);
 	};
 
